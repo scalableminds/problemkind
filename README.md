@@ -8,3 +8,4 @@
 * grunt-contrib-coffee from scalableminds
 * grunt-s3-sync
 * coffeelint
+* added !.bowerrc to .gitignore
