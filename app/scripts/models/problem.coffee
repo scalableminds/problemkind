@@ -1,4 +1,5 @@
 ### define
+underscore : _
 parse: Parse
 ./answer: Answer
 ./solution: Solution
@@ -10,6 +11,7 @@ class Problem extends Parse.Object
   className : "Problem"
 
   defaults : 
+    text : "Hallo Welt"
     answers: []
     thumbs : 0
 
@@ -19,7 +21,8 @@ class Problem extends Parse.Object
       acl.setPublicReadAccess(true)
       p = new Problem(
         user: user
-      ).setACL(acl).save()
+      )
+      p.setACL(acl).save()
       p
     )
 
@@ -57,7 +60,7 @@ class Problem extends Parse.Object
 
   # withAnswers: (f) ->
   #   query = new Parse.Query(Answer)
-  #   query.equalTo("answerTo", this);
+  #   query.equalTo("answerTo", this); 
   #   query.find(
   #     success: (answers) ->
   #       console.log("Successfully retrieved " + answers.length + " answers.")
@@ -78,13 +81,11 @@ class Problem extends Parse.Object
           console.error("Couldn't fetch answers!")
       )
 
-  addAnswer: (content) ->
-    a = new Answer(
-      content: content
-      answerTo: this
-    )
-    a.save()
-    @get("answers").push(a)
+  addAnswer: (answer) ->
+    @save()
+    answer.set("answerTo", this)
+    answer.save()
+    @get("answers").push(answer)
     @save()
 
   addSolution : (content) ->

@@ -38,6 +38,8 @@ require.config(
     parse: 'lib/parse-1.2.12'
 )
 
+require.onError = console.error.bind(console)
+
 define("app", ["lib/application"], (Application) -> new Application())
 
 define([
