@@ -8,7 +8,8 @@
     "requirejs-text": "~2.0.10",
     "lodash": "~2.2.1",
     "backbone": "~1.1.0",
-    "async": "~0.2.5"
+    "async": "~0.2.5",
+    "human_view": "git://github.com/scalableminds/human-view.git"
   },
   "devDependencies": {}
 }
