@@ -13,8 +13,11 @@
 * remove createDefaultTemplate (race condition)
 * grunt:build first concurrent:dist then requirejs
 * requirejs from .tmp dir, 
+* watch:less needs <%= yeoman.app %>
+* aggregate scripts
 
 # Generator Todo
 
 * view scaffold
 * model scaffold (backbone, parse)
+* main view in scaffold
