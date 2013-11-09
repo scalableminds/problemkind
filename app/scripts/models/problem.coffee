@@ -12,13 +12,8 @@ class Problem extends Parse.Object
 
   defaults : 
     text : "Hallo Welt"
-<<<<<<< Updated upstream
-    thumbs : 0
-    answers : []
-=======
     answers: []
     thumbs : []
->>>>>>> Stashed changes
     isCompleted: false
 
   @create: ->
