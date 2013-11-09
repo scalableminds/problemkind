@@ -10,8 +10,6 @@ class Answer extends Parse.Object
   defaults : 
     content: "" 
     questions: []
-    answerTo: {}
-    user : {}
 
   @create : (content) ->
     User.withUser( (user) ->
