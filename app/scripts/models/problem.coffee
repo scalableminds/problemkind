@@ -13,6 +13,7 @@ class Problem extends Parse.Object
   defaults : 
     text : "Hallo Welt"
     thumbs : 0
+    answers : []
     isCompleted: false
 
   @create: ->
