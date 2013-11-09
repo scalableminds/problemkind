@@ -9,6 +9,7 @@ class Problem extends Parse.Object
   className : "Problem"
 
   defaults : 
-    whys : []
+    whys : [# { content: "", questions: []} #]
     user : {}
-    
+
+  addQuestion: ()
