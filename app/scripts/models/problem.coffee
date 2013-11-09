@@ -22,6 +22,15 @@ class Problem extends Parse.Object
       @save()
     )
 
+  @trending : ->
+    query = new Parse.Query(Problem)
+    c = query.collection()
+    c.fetch()
+    c
+
+  firstAnswer : ->
+
+
   # withAnswers: (f) ->
   #   query = new Parse.Query(Answer)
   #   query.equalTo("answerTo", this);
