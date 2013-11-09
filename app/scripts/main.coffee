@@ -11,6 +11,12 @@ require.config
         'jquery'
       ]
       exports: 'Backbone'
+    parse:
+      deps: [
+        'underscore'
+        'jquery'
+      ]
+      exports: 'Parse'
     bootstrap:
       deps: ['jquery']
       exports: 'jquery'
@@ -28,14 +34,23 @@ define([
     'backbone'
     'jquery'
     'app'
+    'parse'
+    'models'
     'routers/router'
-  ], (Backbone, $, app) ->
+  ], (Backbone, $, app, Parse) ->
     Backbone.history.start()
 
     app.addInitializer( (options, callback) -> 
       $(-> callback())
       return
     )
+
+    app.addInitializer( -> 
+      Parse.initialize("Ho021rHvrqJ8QsiDFJi9VVFvcdYj0Q4qKV9BnbHz", "TJpqaB1DKdcfgPUfHZE12whZmWTQmiJVRdP8K0HI")
+      return
+    )
+
+    window.app = app
 
     app.start()
 )
