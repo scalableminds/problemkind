@@ -20,6 +20,7 @@ require.config
     backbone: '../bower_components/backbone/backbone'
     underscore: '../bower_components/lodash/dist/lodash'
     bootstrap: '../bower_components/bootstrap/dist/js/bootstrap'
+    parse: 'lib/parse-1.2.12'
 
 define("app", ["lib/application"], (Application) -> new Application())
 
