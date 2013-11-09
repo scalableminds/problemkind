@@ -56,6 +56,13 @@ define([
 
     app.addInitializer( -> 
       Parse.initialize("Ho021rHvrqJ8QsiDFJi9VVFvcdYj0Q4qKV9BnbHz", "TJpqaB1DKdcfgPUfHZE12whZmWTQmiJVRdP8K0HI")
+      Parse.User.logIn("maik", ":D",
+        success: (user) ->
+          console.log("Logged in as #{user.get("username")}")
+
+        error: (user, error) ->
+          console.error("Couldn't log in #{error}")
+      )
       return
     )
 

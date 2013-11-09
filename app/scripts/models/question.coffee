@@ -7,10 +7,12 @@ class Question extends Parse.Object
   className : "Question"
 
   defaults : 
+    content: ""
+    questionTo: {}
     answer : {}
     user : {}
 
-  initialize : ->
+  setAnswer: (user, content) ->
 
   class @Collection extends Parse.Collection
 
