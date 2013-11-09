@@ -13,6 +13,7 @@
 * remove createDefaultTemplate (race condition)
 * grunt:build first concurrent:dist then requirejs
 * requirejs from .tmp dir, 
+* watch:less needs <%= yeoman.app %>
 
 # Generator Todo
 

@@ -1,7 +1,8 @@
 # global require
 'use strict'
 
-require.config
+require.config(
+
   shim:
     underscore:
       exports: '_'
@@ -26,14 +27,16 @@ require.config
         'underscore'
       ]
       exports: 'HumanView'
+
   paths:
     async: '../bower_components/async/lib/async'
     jquery: '../bower_components/jquery/jquery'
     backbone: '../bower_components/backbone/backbone'
     underscore: '../bower_components/lodash/dist/lodash'
     bootstrap: '../bower_components/bootstrap/dist/js/bootstrap'
-    parse: 'lib/parse-1.2.12'
     human_view: '../bower_components/human_view/human-view'
+    parse: 'lib/parse-1.2.12'
+)
 
 define("app", ["lib/application"], (Application) -> new Application())
 
@@ -45,7 +48,7 @@ define([
     'routers/router'
     'models'
     'views'
-  ], (Backbone, $, app, Parse, Router) ->
+  ], (Backbone, $, app, Parse, Router, Models, Views) ->
 
     window.app = app
 
@@ -68,6 +71,8 @@ define([
 
     app.addInitializer( ->
       app.router = new Router()
+      app.views = Views
+      app.models = Models
     )
 
     app.on("start", ->
