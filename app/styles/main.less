@@ -2,21 +2,21 @@
 
 @import 'bootstrap/less/bootstrap.less';
 
-.primary-1 { background-color: #794695 }
-.primary-2 { background-color: #6D4682 }
-.primary-3 { background-color: #5F2B7B }
-.primary-4 { background-color: #935EB0 }
-.primary-5 { background-color: #9667B0 }
-.secondary-a-1 { background-color: #A9D05C }
-.secondary-a-2 { background-color: #98B65D }
-.secondary-a-3 { background-color: #85AC39 }
-.secondary-a-4 { background-color: #B8DC70 }
-.secondary-a-5 { background-color: #BCDC7C }
-.secondary-b-1 { background-color: #DFCA62 }
-.secondary-b-2 { background-color: #C3B364 }
-.secondary-b-3 { background-color: #B8A33D }
-.secondary-b-4 { background-color: #E7D476 }
-.secondary-b-5 { background-color: #E7D683 } 
+@primary-1: #794695;
+@primary-2: #6D4682;
+@primary-3: #5F2B7B;
+@primary-4: #935EB0;
+@primary-5: #9667B0;
+@secondary-a-1: #A9D05C;
+@secondary-a-2: #98B65D;
+@secondary-a-3: #85AC39;
+@secondary-a-4: #B8DC70;
+@secondary-a-5: #BCDC7C;
+@secondary-b-1: #DFCA62;
+@secondary-b-2: #C3B364;
+@secondary-b-3: #B8A33D;
+@secondary-b-4: #E7D476;
+@secondary-b-5: #E7D683; 
 
 
 .browsehappy {
@@ -85,7 +85,7 @@ body {
 }
 
 .problem {
-    background-color: #5f2B7B;
+    background-color: @primary-1;
     color: white;
 }
 
@@ -103,11 +103,28 @@ body {
     border-color: #cdbfe3;
 }
 
+.after-wish {
+    display: none;
+}
+
+.proposed-solution {
+    margin-top: 20px;
+}
+
 .btn-outline-inverse:hover, .btn-outline-inverse:focus, .btn-outline-inverse:active {
-    color: #5f2B7B;
+    color: @primary-1;
     text-shadow: none;
     background-color: #fff;
     border-color: #fff;
+}
+
+.problem {
+    padding-bottom: 20px;
+}
+
+.problem-details {
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .related-problems {
@@ -115,6 +132,15 @@ body {
         h3 {
             margin-top: 25px;
             margin-bottom: 30px;
+        }
+    }
+}
+
+.problem-details {
+    .container {
+        h4 {
+            font-weight: bold;
+            margin-top: 0px;
         }
     }
 }
