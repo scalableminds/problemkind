@@ -8,11 +8,23 @@ class Answer extends Parse.Object
   className : "Answer"
 
   defaults : 
-    content: "", 
+    content: "" 
+    questions: []
+    answerTo: {}
     user : {}
 
   initialize : ->
-    @questions = new (Question.Collection)()
+    @save()
+    # @set("questions", new (Question.Collection)())
+
+  addQuestion: (content) ->
+    q = new Question(
+      content: content
+      questionTo: this
+    )
+    q.save()
+    @get("questions").push(q)
+    @save()
 
   class @Collection extends Parse.Collection
 

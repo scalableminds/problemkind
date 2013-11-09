@@ -1,6 +1,8 @@
 ### define
 parse: Parse
 ./answer: Answer
+./solution: Solution
+./user: User
 ###
 
 class Problem extends Parse.Object
@@ -8,17 +10,56 @@ class Problem extends Parse.Object
   className : "Problem"
 
   defaults : 
-    whys : []
-    user : {}
+    answers: []
     thumbs : 0
 
   initialize : ->
-    @answers = new (Answer.Collection)()
+    User.withUser( (user) =>
+      @set("user", user)
+      acl = new Parse.ACL(user)
+      acl.setPublicReadAccess(true)
+      @setACL(acl)
+      @save()
+    )
 
-  addQuestion : (whyIdx, content) ->
-    if whyIdx < whys.length
-      whys[whyIdx].push() 
+  # withAnswers: (f) ->
+  #   query = new Parse.Query(Answer)
+  #   query.equalTo("answerTo", this);
+  #   query.find(
+  #     success: (answers) ->
+  #       console.log("Successfully retrieved " + answers.length + " answers.")
+  #       f(answers)
+
+  #     error: (error) ->
+  #       console.warn("Error: " + error.code + " " + error.message)
+  #   )
+
+  addQuestion : (answerIdx, content) ->
+    # TODO: implement
+    answers = @get("answers")
+    if answerIdx < answers.length
+      answers[answerIdx].fetch(
+        success: (answer) ->
+          answer.addQuestion(content)
+        error: (answer, error) ->
+          console.error("Couldn't fetch answers!")
+      )
+
+  addAnswer: (content) ->
+    a = new Answer(
+      content: content
+      answerTo: this
+    )
+    a.save()
+    @get("answers").push(a)
+    @save()
+
+  addSolution : (content) ->
+    new Solution(
+      content: content
+      solutionTo: this
+    ).save()
 
   thumbsUp : ->
-    @set("thumbs", @thumbs + 1)
+    @set("thumbs", @get("thumbs") + 1)
     @save()

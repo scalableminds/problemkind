@@ -9,4 +9,13 @@ class Solution extends Parse.Object
   defaults : 
     content : ""
     isAccepted : false
-    user : {}
+
+  initialize : ->
+    User.withUser( (user) =>
+      @set("user", user)
+      @save()
+    )
+
+  class @Collection extends Parse.Collection
+
+    model: Solution
