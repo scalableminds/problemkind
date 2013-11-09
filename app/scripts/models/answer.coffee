@@ -13,8 +13,15 @@ class Answer extends Parse.Object
     answerTo: {}
     user : {}
 
-  initialize : ->
-    # @set("questions", new (Question.Collection)())
+  @create : (content) ->
+    User.withUser( (user) ->
+      c = new Anwer(
+        user: user
+        content: content
+      )
+      c.save()
+      c
+    )
 
   addQuestion: (content) ->
     q = new Question(

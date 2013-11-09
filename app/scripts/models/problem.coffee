@@ -12,6 +12,7 @@ class Problem extends Parse.Object
   defaults : 
     answers: []
     thumbs : 0
+    isComplete: false
 
   @create: ->
     User.withUser( (user) =>
@@ -26,7 +27,10 @@ class Problem extends Parse.Object
 
   @trending: (limit = 100) ->
     query = new Parse.Query(Problem)
-    c = query.limit(limit).collection()
+    c = query
+      .equalTo("isComplete", true)
+      .limit(limit)
+      .collection()
     c.fetch()
     c
 
@@ -40,7 +44,10 @@ class Problem extends Parse.Object
       $, 
       keywords.map( (x) -> new Parse.Query(Answer).contains("content", x)))
     query.matchesQuery("answers", answers);
-    c = query.limit(limit).collection()
+    c = query
+      .limit(limit)
+      .equalTo("isComplete", true)
+      .collection()
     c.fetch()
     c
 
@@ -85,6 +92,10 @@ class Problem extends Parse.Object
     )
     a.save()
     @get("answers").push(a)
+    @save()
+
+  complete: ->
+    @set("isComplete", true)
     @save()
 
   addSolution : (content) ->
