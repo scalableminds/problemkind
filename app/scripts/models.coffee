@@ -3,6 +3,7 @@ app : app
 ./models/problem : Problem
 ./models/question : Question
 ./models/solution : Solution
+./models/answer : Answer
 ###
 
 Models =
@@ -10,6 +11,7 @@ Models =
     Problem
     Question
     Solution
+    Answer
   }
 
 
