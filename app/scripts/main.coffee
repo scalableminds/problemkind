@@ -35,6 +35,7 @@ define([
     'jquery'
     'app'
     'parse'
+    'models'
     'routers/router'
   ], (Backbone, $, app, Parse) ->
     Backbone.history.start()
@@ -48,6 +49,8 @@ define([
       Parse.initialize("Ho021rHvrqJ8QsiDFJi9VVFvcdYj0Q4qKV9BnbHz", "TJpqaB1DKdcfgPUfHZE12whZmWTQmiJVRdP8K0HI")
       return
     )
+
+    window.app = app
 
     app.start()
 )
