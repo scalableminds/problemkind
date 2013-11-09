@@ -12,8 +12,13 @@ class Problem extends Parse.Object
 
   defaults : 
     text : "Hallo Welt"
+<<<<<<< Updated upstream
     thumbs : 0
     answers : []
+=======
+    answers: []
+    thumbs : []
+>>>>>>> Stashed changes
     isCompleted: false
 
   @create: ->
@@ -123,6 +128,16 @@ class Problem extends Parse.Object
     )
     super(args...)
 
+  canGiveThumbs : ->
+    User.withUser( (user) => 
+      not @get("thumbs").contains(user)
+    )
+
+  countThumbs : ->
+    @get("thumbs").length
+
   thumbsUp : ->
-    @set("thumbs", @get("thumbs") + 1)
-    @save()
+    User.withUser( (user) => 
+      @set("thumbs", @get("thumbs").push(user))
+      @save()
+    )
