@@ -63,7 +63,7 @@ module.exports = function (grunt) {
             },
             livereload: {
                 options: {
-                    open: true,
+                    //open: true,
                     base: [
                         '.tmp',
                         '<%= yeoman.app %>'
@@ -191,10 +191,11 @@ module.exports = function (grunt) {
                 // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
                 options: {
                     // `name` and `out` is set by grunt-usemin
-                    baseUrl: '<%= yeoman.app %>/scripts',
+                    baseUrl: '<%= yeoman.app %>/../.tmp/scripts',
                     optimize: 'none',
                     paths: {
-                        'templates': '../../.tmp/scripts/templates'
+                        '../bower_components' : '../<%= yeoman.app %>/bower_components'
+                        //'templates': '../../.tmp/scripts/templates'
                     },
                     // TODO: Figure out how to make sourcemaps work with grunt-usemin
                     // https://github.com/yeoman/grunt-usemin/issues/30
@@ -328,7 +329,12 @@ module.exports = function (grunt) {
         },
         jst: {
             options: {
-                amd: true
+                amd: true,
+                processName: function(filename) {
+                    return filename
+                        .replace(grunt.config("yeoman.app") + "/scripts/templates/", "")
+                        .replace(/\.[a-z0-9]+$/i, "");
+                }
             },
             compile: {
                 files: {
@@ -340,20 +346,17 @@ module.exports = function (grunt) {
             server: [
                 'less',
                 'coffee:dist',
-                'createDefaultTemplate',
                 'jst',
                 'copy:styles'
             ],
             test: [
                 'coffee',
-                'createDefaultTemplate',
                 'jst',
                 'copy:styles'
             ],
             dist: [
                 'coffee',
                 'less',
-                'createDefaultTemplate',
                 'jst',
                 'copy:styles',
                 'imagemin',
@@ -361,10 +364,6 @@ module.exports = function (grunt) {
                 'htmlmin'
             ]
         }
-    });
-
-    grunt.registerTask('createDefaultTemplate', function () {
-        grunt.file.write('.tmp/scripts/templates.js', 'this.JST = this.JST || {};');
     });
 
     grunt.registerTask('server', function (target) {
@@ -392,8 +391,8 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'useminPrepare',
-        'requirejs',
         'concurrent:dist',
+        'requirejs',
         'autoprefixer',
         'concat',
         'cssmin',

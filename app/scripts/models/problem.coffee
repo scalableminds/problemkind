@@ -8,6 +8,7 @@ class Problem extends Parse.Object
   className : "Problem"
 
   defaults : 
+    whys : []
     user : {}
     thumbs : 0
 

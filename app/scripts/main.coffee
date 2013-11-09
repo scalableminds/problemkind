@@ -20,6 +20,12 @@ require.config
     bootstrap:
       deps: ['jquery']
       exports: 'jquery'
+    human_view:
+      deps: [
+        'backbone'
+        'underscore'
+      ]
+      exports: 'HumanView'
   paths:
     async: '../bower_components/async/lib/async'
     jquery: '../bower_components/jquery/jquery'
@@ -27,6 +33,7 @@ require.config
     underscore: '../bower_components/lodash/dist/lodash'
     bootstrap: '../bower_components/bootstrap/dist/js/bootstrap'
     parse: 'lib/parse-1.2.12'
+    human_view: '../bower_components/human_view/human-view' 
 
 define("app", ["lib/application"], (Application) -> new Application())
 
@@ -35,10 +42,12 @@ define([
     'jquery'
     'app'
     'parse'
-    'models'
     'routers/router'
-  ], (Backbone, $, app, Parse) ->
-    Backbone.history.start()
+    'models'
+    'views'
+  ], (Backbone, $, app, Parse, Router) ->
+
+    window.app = app
 
     app.addInitializer( (options, callback) -> 
       $(-> callback())
@@ -50,7 +59,19 @@ define([
       return
     )
 
-    window.app = app
+    app.addInitializer( ->
+      app.router = new Router()
+    )
 
+    app.on("start", ->
+
+      app.view = new app.views.MainView().renderAndBind()
+      $("body").append(app.view.el)
+
+      Backbone.history.start()
+
+      return
+    )
+    
     app.start()
 )
