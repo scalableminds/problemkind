@@ -13,7 +13,6 @@ class Solution extends Parse.Object
   initialize : ->
     User.withUser( (user) =>
       @set("user", user)
-      @save()
     )
 
   class @Collection extends Parse.Collection

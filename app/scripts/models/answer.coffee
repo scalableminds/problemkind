@@ -14,7 +14,6 @@ class Answer extends Parse.Object
     user : {}
 
   initialize : ->
-    @save()
     # @set("questions", new (Question.Collection)())
 
   addQuestion: (content) ->

@@ -19,13 +19,21 @@ class Problem extends Parse.Object
       acl = new Parse.ACL(user)
       acl.setPublicReadAccess(true)
       @setACL(acl)
-      @save()
     )
 
-  @trending : ->
+  @trending: (limit = 100) ->
     query = new Parse.Query(Problem)
     c = query.collection()
+    c.limit(100)
     c.fetch()
+    c
+
+  @similar : (to) ->
+    query = new Parse.Query(Problem)
+    answers = new Parse.Query(Answer)
+    answers.equalTo("content", to)
+    # query.matchesQuery("answers", answers);
+    c = answers.collection()
     c
 
   firstAnswer : ->
