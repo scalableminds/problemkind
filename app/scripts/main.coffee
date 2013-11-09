@@ -33,7 +33,7 @@ require.config
     underscore: '../bower_components/lodash/dist/lodash'
     bootstrap: '../bower_components/bootstrap/dist/js/bootstrap'
     parse: 'lib/parse-1.2.12'
-    human_view: '../bower_components/human_view/human-view' 
+    human_view: '../bower_components/human_view/human-view'
 
 define("app", ["lib/application"], (Application) -> new Application())
 
