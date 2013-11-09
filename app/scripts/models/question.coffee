@@ -4,11 +4,14 @@ parse: Parse
 
 class Question extends Parse.Object
 
-  constructor : -> 
-
   className : "Question"
 
   defaults : 
-    content : ""
-    answer : ""
+    answer : {}
     user : {}
+
+  initialize : ->
+
+  class @Collection extends Parse.Collection
+
+    model : Question
