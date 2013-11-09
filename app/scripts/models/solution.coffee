@@ -10,11 +10,6 @@ class Solution extends Parse.Object
     content : ""
     isAccepted : false
 
-  initialize : ->
-    User.withUser( (user) =>
-      @set("user", user)
-    )
-
   class @Collection extends Parse.Collection
 
     model: Solution

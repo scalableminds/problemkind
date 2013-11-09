@@ -13,30 +13,46 @@ class Problem extends Parse.Object
     answers: []
     thumbs : 0
 
-  initialize : ->
+  @create: ->
     User.withUser( (user) =>
-      @set("user", user)
       acl = new Parse.ACL(user)
       acl.setPublicReadAccess(true)
-      @setACL(acl)
+      p = new Problem(
+        user: user
+      ).setACL(acl).save()
+      p
     )
+
 
   @trending: (limit = 100) ->
     query = new Parse.Query(Problem)
-    c = query.collection()
-    c.limit(100)
+    c = query.limit(limit).collection()
     c.fetch()
     c
 
-  @similar : (to) ->
+  @keywordsIn: (str) ->
+    str.replace(/[^A-Za-z\s]/g, "").split(" ")  
+
+  @similar : (to, limit = 100) ->
+    keywords = Problem.keywordsIn(to)
     query = new Parse.Query(Problem)
-    answers = new Parse.Query(Answer)
-    answers.equalTo("content", to)
-    # query.matchesQuery("answers", answers);
-    c = answers.collection()
+    answers = Parse.Query.or.apply(
+      $, 
+      keywords.map( (x) -> new Parse.Query(Answer).contains("content", x)))
+    query.matchesQuery("answers", answers);
+    c = query.limit(limit).collection()
+    c.fetch()
     c
 
   firstAnswer : ->
+    answers = @get("answers")
+    if answers.length > 0
+      a = answers[0]
+      a.fetch(
+        error: (answer, error) ->
+          console.error("Couldn't fetch first answer: #{error}")
+      )
+      a
 
 
   # withAnswers: (f) ->
@@ -72,10 +88,13 @@ class Problem extends Parse.Object
     @save()
 
   addSolution : (content) ->
-    new Solution(
-      content: content
-      solutionTo: this
-    ).save()
+    User.withUser( (user) =>
+      new Solution(
+        content: content
+        solutionTo: this
+        user: user
+      ).save()
+    )
 
   thumbsUp : ->
     @set("thumbs", @get("thumbs") + 1)
