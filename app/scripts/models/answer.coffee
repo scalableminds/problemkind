@@ -1,6 +1,7 @@
 ### define
 parse: Parse
 ./question: Question
+./user: User
 ###
 
 class Answer extends Parse.Object
@@ -13,7 +14,7 @@ class Answer extends Parse.Object
 
   @create : (content) ->
     User.withUser( (user) ->
-      c = new Anwer(
+      c = new Answer(
         user: user
         content: content
       )

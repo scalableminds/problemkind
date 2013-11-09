@@ -19,19 +19,22 @@ class ProblemOverviewView extends HumanView
     @listenTo(@collection, "sync", @handleCollectionSync)
 
 
-  handleCollectionSync : (item) ->
+  handleCollectionSync : ->
 
-    @collection.trigger("add", item)
+    console.log(arguments)
+    @collection.each( (item) => @collection.trigger("add", item) )
     return
 
 
   class @ItemView extends HumanView
 
-    textBindings :
-      "thumbs" : ".problem-statement"
+    textBindings : 
+      "_answer0" : ".problem-statement"
+      "_answer1" : ".problem-question"
 
     template : templates.problem_overview_item
 
     render : ->
 
-      @renderAndBind() 
+      @renderAndBind()
+      @model.fetchAnswers()

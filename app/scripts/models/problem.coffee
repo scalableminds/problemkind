@@ -12,7 +12,6 @@ class Problem extends Parse.Object
 
   defaults : 
     text : "Hallo Welt"
-    answers: []
     thumbs : 0
     isCompleted: false
 
@@ -54,7 +53,16 @@ class Problem extends Parse.Object
     c.fetch()
     c
 
-  firstAnswer : ->
+  fetchAnswers : ->
+    answers = _(@get("answers")).first(3).each( (answer, i) =>
+      answer.fetch(
+        success : =>
+          @set("_answer#{i}", answer.get("content"))
+      )
+    )
+    answers
+
+  fetchAnswer : ->
     answers = @get("answers")
     if answers.length > 0
       a = answers[0]
@@ -107,6 +115,12 @@ class Problem extends Parse.Object
         user: user
       ).save()
     )
+
+  save : (args...) ->
+    _(@attributes).forOwn( (value, key) =>
+      @unset(key) if key[0] == "_"
+    )
+    super(args...)
 
   thumbsUp : ->
     @set("thumbs", @get("thumbs") + 1)

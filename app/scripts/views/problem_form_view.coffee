@@ -17,7 +17,7 @@ class ProblemFormView extends HumanView
 
     @renderAndBind()
 
-    @activeAnswerInput = new ProblemFormView.InputView(model : new app.models.Answer())
+    @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
     @renderSubview(@activeAnswerInput, ".answers")
 
 
@@ -25,7 +25,7 @@ class ProblemFormView extends HumanView
 
     @model.addAnswer(@activeAnswerInput.model)
 
-    @activeAnswerInput = new ProblemFormView.InputView(model : new app.models.Answer())
+    @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
     @renderSubview(@activeAnswerInput, ".answers")
 
     @$el.removeClass("before-wish")
@@ -33,8 +33,12 @@ class ProblemFormView extends HumanView
 
   handleLollipopButton : ->
 
-    @model.addAnswer(@activeAnswerInput.model)
-    @model.save()
+    if @activeAnswerInput.model.get("content") != ""
+      @model.addAnswer(@activeAnswerInput.model)
+    else
+      @activeAnswerInput.model.destroy()
+
+    @model.complete()
 
     @animateRemove()
 
