@@ -18,6 +18,10 @@
 @secondary-b-4: #E7D476;
 @secondary-b-5: #E7D683; 
 
+.container {
+    width: 860px;
+}
+
 
 .browsehappy {
     margin: 0.2em 0;
@@ -79,8 +83,13 @@ footer {
         resize: none;
     }
 
-    .char-counter.warning {
-        color: red;
+    .char-counter {
+        margin: 10px;
+        float: left;
+        
+        .warning {
+            color: red;
+        }
     }
 
     &.before-wish {
