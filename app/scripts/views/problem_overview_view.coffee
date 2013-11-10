@@ -37,4 +37,6 @@ class ProblemOverviewView extends HumanView
     render : ->
 
       @renderAndBind()
+
+      @$("a").attr("href", "#problem/#{@model.id}")
       @model.fetchAnswers()
