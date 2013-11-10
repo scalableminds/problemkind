@@ -21,12 +21,6 @@ require.config(
     bootstrap:
       deps: ['jquery']
       exports: 'jquery'
-    human_view:
-      deps: [
-        'backbone'
-        'underscore'
-      ]
-      exports: 'HumanView'
 
   paths:
     async: '../bower_components/async/lib/async'
@@ -42,7 +36,7 @@ require.onError = console.error.bind(console)
 
 define("app", ["lib/application"], (Application) -> new Application())
 
-define([
+require([
     'backbone'
     'jquery'
     'app'
