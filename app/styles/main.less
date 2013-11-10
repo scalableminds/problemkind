@@ -64,6 +64,10 @@ footer {
     color: white;
     padding-bottom: 20px;
 
+    .speech-bar {
+        width: 100%;
+    }
+
     h2 {
         font-weight: 200;
         line-height: 1.3;
@@ -71,8 +75,15 @@ footer {
         width: 70%;
     }
 
+    .problem-statement-input {
+        resize: none;
+    }
+
+    .char-counter.warning {
+        color: red;
+    }
+
     &.before-wish {
-        .asking-girl,
         .lollipop-button {
             display: none;
         }
@@ -80,11 +91,10 @@ footer {
 }
 
 .problem-preview {
-    padding: 5px 5px 5px 5px;
-}
-
-.problem-preview:hover {
-    outline: dotted #5f2B7B 1px;
+    padding: 20px;
+    border: 1px solid lightgreen;
+    min-height: 200px;
+    border-radius: 3px;
 }
 
 .btn-outline-inverse {
@@ -95,6 +105,10 @@ footer {
 
 .proposed-solution {
     margin-top: 20px;
+}
+
+.accepted-solution {
+    .well
 }
 
 .btn-outline-inverse:hover, .btn-outline-inverse:focus, .btn-outline-inverse:active {

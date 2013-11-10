@@ -20,6 +20,8 @@ class ProblemFormView extends HumanView
     @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
     @renderSubview(@activeAnswerInput, ".answers")
 
+    @activeAnswerInput.setAutofocus()
+
 
   handleNextButton : ->
 
@@ -75,6 +77,15 @@ class ProblemFormView extends HumanView
       else
         @$(".char-counter").removeClass("warning")
 
+
+    setAutofocus : ->
+
+      @$(".problem-statement-input").attr("autofocus", "")
+
+
+    makeReadonly : ->
+
+      
 
     render : -> 
       @renderAndBind()
