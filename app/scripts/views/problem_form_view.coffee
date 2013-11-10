@@ -14,6 +14,7 @@ class ProblemFormView extends HumanView
     "click .lollipop-button" : "handleLollipopButton"
     "click .next-button" : "handleNextButton"
     "submit form" : "handleNextButton"
+    "input .problem-statement-input" : "handleInput"
 
   render : ->
 
@@ -21,6 +22,7 @@ class ProblemFormView extends HumanView
 
     @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
     @renderSubview(@activeAnswerInput, ".answers-input")
+    @handleInput()
 
 
   handleNextButton : ->
@@ -56,6 +58,14 @@ class ProblemFormView extends HumanView
     @model.complete()
 
     window.location.href = "#submitted"
+
+
+  handleInput : ->
+
+    if @$(".problem-statement-input").val()
+      @$(".next-button").attr("disabled", null)
+    else
+      @$(".next-button").attr("disabled", "")
 
 
 

@@ -124,7 +124,7 @@ class Problem extends Parse.Object
 
   canGiveThumbs : ->
     User.withUser( (user) => 
-      not @get("thumbs").contains(user)
+      not _(@get("thumbs")).contains(user)
     )
 
   countThumbs : ->
@@ -132,6 +132,8 @@ class Problem extends Parse.Object
 
   thumbsUp : ->
     User.withUser( (user) => 
-      @set("thumbs", @get("thumbs").push(user))
-      @save()
+      if @canGiveThumbs()
+        newThumbs = @get("thumbs").concat([ user ])
+        @set("thumbs", newThumbs)
+        @save()
     )
