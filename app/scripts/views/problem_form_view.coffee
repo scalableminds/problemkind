@@ -16,6 +16,12 @@ class ProblemFormView extends HumanView
     "submit form" : "handleNextButton"
     "input .problem-statement-input" : "handleInput"
 
+  textSnippets:
+    "initial": ["Tell me, what annoys you?"]
+    "why" : ["Why?"]
+    "thinking" : ["Mhm, interesting.", "Aha..."]
+
+
   render : ->
 
     @renderAndBind()

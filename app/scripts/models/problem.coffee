@@ -14,6 +14,7 @@ class Problem extends Parse.Object
     text : "Hallo Welt"
     answers: []
     thumbs : []
+    numberOfThumbs: 0
     isCompleted: false
 
   @create: ->
@@ -32,10 +33,25 @@ class Problem extends Parse.Object
     query = new Parse.Query(Problem)
     c = query
       .equalTo("isCompleted", true)
+      .descending("numberOfThumbs")
       .limit(limit)
       .collection()
     c.fetch()
     c
+
+  @ownProblems: (limit = 100) ->
+    User.maybeUser( (
+      (user) ->
+        query = new Parse.Query(Problem)
+        c = query
+          .equalTo("isCompleted", true)
+          .equalTo("user", user)
+          .descending("numberOfThumbs")
+          .limit(limit)
+          .collection()
+        c.fetch()
+        c
+      ),  new (Problem.Collection))
 
   @keywordsIn: (str) ->
     str.replace(/[^A-Za-z\s]/g, "").split(" ")  
@@ -58,7 +74,8 @@ class Problem extends Parse.Object
     answers = _(@get("answers")).first(3).each( (answer, i) =>
       answer.fetch(
         success : =>
-          @set("_answer#{i}", answer.get("content"))
+          @attributes["_answer#{i}"] = answer.get("content")
+          @trigger("change:_answer#{i}", answer.get("content"))
       )
     )
     answers
@@ -118,29 +135,32 @@ class Problem extends Parse.Object
 
   save : (args...) ->
     _(@attributes).forOwn( (value, key) =>
-      @unset(key) if key[0] == "_"
+      delete @attributes[key] if key[0] == "_"
     )
     super(args...)
 
   canGiveThumbs : ->
     User.withUser( (user) => 
-      not _(@get("thumbs")).contains(user)
+      not _(@get("thumbs")).find( (e) -> e.id == user.id)
     )
-
-  countThumbs : ->
-    @get("thumbs").length
 
   thumbsUp : ->
     User.withUser( (user) => 
       if @canGiveThumbs()
         newThumbs = @get("thumbs").concat([ user ])
         @set("thumbs", newThumbs)
+        @set("numberOfThumbs", newThumbs.length)
         @save()
     )
 
   thumbsDown : ->
     User.withUser( (user) => 
-      newThumbs = _.without(@get("thumbs"), user)
+      newThumbs = _(@get("thumbs")).filter( (e) -> e.id != user.id).value() 
       @set("thumbs", newThumbs)
+      @set("numberOfThumbs", newThumbs.length)
       @save()
     )
+
+  class @Collection extends Backbone.Collection
+
+    model : Problem

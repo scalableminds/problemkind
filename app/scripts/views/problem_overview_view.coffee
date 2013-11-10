@@ -34,6 +34,7 @@ class ProblemOverviewView extends HumanView
     textBindings : 
       "_answer0" : ".problem-statement"
       "_answer1" : ".problem-question"
+      "numberOfThumbs" : ".thumb-count"
 
     template : templates.problem_overview_item
 
@@ -44,7 +45,7 @@ class ProblemOverviewView extends HumanView
       @$("a").attr("href", "#problem/#{@model.id}")
       
       @listenToAndRun(@model, "change:thumbs", ->
-        @$(".thumb-count").text(@model.countThumbs())
+        # @$(".thumb-count").text(@model.countThumbs())
         @$(".thumb-info").toggleClass("thumbed", not @model.canGiveThumbs())
       )
       @model.fetchAnswers()
