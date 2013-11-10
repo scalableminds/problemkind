@@ -55,7 +55,7 @@ class Problem extends Parse.Object
     c
 
   fetchAnswers : ->
-    answers = _(@get("answers")).first(3).each( (answer, i) =>
+    answers = _(@get("answers")).each( (answer, i) =>
       answer.fetch(
         success : =>
           @set("_answer#{i}", answer.get("content"))
