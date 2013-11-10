@@ -98,7 +98,6 @@ class Problem extends Parse.Object
       )
 
   addAnswer: (answer) ->
-    @save()
     answer.set("answerTo", this)
     answer.save()
     @get("answers").push(answer)
