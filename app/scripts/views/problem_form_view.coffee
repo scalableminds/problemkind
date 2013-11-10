@@ -23,12 +23,13 @@ class ProblemFormView extends HumanView
 
   handleNextButton : ->
 
-    @model.addAnswer(@activeAnswerInput.model)
+    if @activeAnswerInput.model.get("content")
+      @model.addAnswer(@activeAnswerInput.model)
 
-    @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
-    @renderSubview(@activeAnswerInput, ".answers")
+      @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
+      @renderSubview(@activeAnswerInput, ".answers")
 
-    @$el.removeClass("before-wish")
+      @$el.removeClass("before-wish")
 
 
   handleLollipopButton : ->
@@ -57,11 +58,22 @@ class ProblemFormView extends HumanView
 
     events : 
       'change .problem-statement-input' : 'handleInputChange'
+      'input .problem-statement-input' : 'handleInput'
 
 
     handleInputChange : ->
       @model.set("content", @$(".problem-statement-input").val())
       return
+
+
+    handleInput : ->
+
+      charCount = @$(".problem-statement-input").val().length
+      @$(".char-counter").text("#{charCount}/140")
+      if charCount > 140
+        @$(".char-counter").addClass("warning")
+      else
+        @$(".char-counter").removeClass("warning")
 
 
     render : -> 
