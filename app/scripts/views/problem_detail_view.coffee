@@ -10,6 +10,11 @@ class ProblemDetailView extends HumanView
 
   template : templates.problem_detail
 
+  constructor : ->
+
+    super
+    @proxyModel = _.memoize(@proxyModel, (model) -> model.id)
+
 
   render : ->
 
@@ -42,7 +47,8 @@ class ProblemDetailView extends HumanView
   class @ItemView extends HumanView
 
     textBindings :
-      "content" : ".answer"
+      "answer" : ".answer"
+      "question" : ".question"
 
     template : templates.problem_detail_item
 
