@@ -341,6 +341,13 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '**/*.css'
+      },
+      require_scripts: {
+        expand: true,
+        dot: true,
+        cwd: '<%= yeoman.app %>/',
+        dest: '.tmp/',
+        src: '**/*.js'
       }
     },
     bower: {
@@ -411,11 +418,18 @@ module.exports = function (grunt) {
         concurrency: 5
       }, 
       deploy: {
+        options: {
+          headers: {
+            "Content-Encoding": "gzip"
+          }
+        },          
         files: [{
           root: "dist",
           src: "dist/**/*.*",
           nocase: true,
-          dest: "/"
+          dest: "/",
+          gzip: true,
+          compressionLevel: 9
         }]
       }
     }
@@ -481,6 +495,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'concurrent:dist',
     'aggregate_scripts',
+    'copy:require_scripts',
     'requirejs',
     'autoprefixer',
     'concat',

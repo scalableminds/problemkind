@@ -22,6 +22,10 @@ class ProblemFormView extends HumanView
       "Interesting."
       "Aha."
       "Ohh."
+      "I see."
+      "Mhm."
+      "I understand."
+      "Of course."
     ]
     initial : "Tell me, what annoys you?"
     then : "Why?"
@@ -56,7 +60,6 @@ class ProblemFormView extends HumanView
 
       @setQuestion(@phrases.thinking[_.random(0, @phrases.thinking.length - 1)])
       
-
       window.setTimeout(
         =>
           @setQuestion(@phrases.then)
