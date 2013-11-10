@@ -28,7 +28,7 @@ class ProblemFormView extends HumanView
       "Of course."
       "Umm."
     ]
-    initial : "Tell me, what annoys you?"
+    initial : "Tell me, what's your problem?"
     then : "Why?"
 
   render : ->
