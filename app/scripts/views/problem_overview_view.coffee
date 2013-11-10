@@ -28,6 +28,9 @@ class ProblemOverviewView extends HumanView
 
   class @ItemView extends HumanView
 
+    events : 
+      "click .thumb-info" : "handleThumbClick"
+
     textBindings : 
       "_answer0" : ".problem-statement"
       "_answer1" : ".problem-question"
@@ -39,5 +42,16 @@ class ProblemOverviewView extends HumanView
       @renderAndBind()
 
       @$("a").attr("href", "#problem/#{@model.id}")
-      @$(".thumb-count").text(@model.countThumbs())
+      
+      @listenToAndRun(@model, "change:thumbs", ->
+        @$(".thumb-count").text(@model.countThumbs())
+      )
       @model.fetchAnswers()
+
+
+
+    handleThumbClick : (event) ->
+
+      event.preventDefault()
+      event.stopPropagation()
+      @model.thumbsUp()

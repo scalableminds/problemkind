@@ -116,6 +116,11 @@ footer {
         }
     }
 
+    .next-button {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
     .lollipop-button {
         .icon {
             display: inline-block;
@@ -144,18 +149,6 @@ footer {
     
 }
 
-.problem-preview {
-    padding: 20px;
-    border: 1px solid lighten(@primary-1, 20%);
-    min-height: 200px;
-    border-radius: 3px;
-
-    a {
-        color: #000;
-        text-decoration: none;
-    }
-}
-
 .btn-outline-inverse {
     color: #fff;
     background-color: transparent;
@@ -182,12 +175,60 @@ footer {
     padding-bottom: 20px;
 }
 
-.related-problems {
-    .container{
+.problem-overview {
+
+    a {
+        color: #000;
+        text-decoration: none;
+    }
+
+    .container {
         h3 {
             margin-top: 25px;
             margin-bottom: 30px;
         }
+    }
+
+    .problem-tile {
+        padding: 10px;
+        position: relative;
+        :hover{
+           background-color:#BE99D6;
+        }
+    }
+
+    .problem-preview {
+        padding: 20px;
+        border: 1px solid lighten(@primary-1, 20%);
+        min-height: 200px;
+        border-radius: 3px;
+
+    }
+
+    .thumb-info{
+        position: absolute;
+        bottom: 17px;
+        right: 14px;
+
+        .thumb{
+            width: 35px;
+            margin-bottom: 1px;
+            float: right;
+            img{
+                width: 100%;
+            }
+        }
+
+        .thumb-count{
+            margin-right: 7px;
+            float: right;
+            padding-top: 10px;
+        }
+    }
+
+    .problem-tiles{
+        padding-left: 5px;
+        padding-right: 5px;
     }
 }
 
@@ -198,40 +239,6 @@ footer {
             margin-top: 0px;
         }
     }
-}
-
-.problem-tile{
-    padding: 10px;
-    position: relative;
-    :hover{
-       background-color:#BE99D6;
-    }
-}
-
-.thumb-info{
-    position: absolute;
-    bottom: 17px;
-    right: 14px;
-
-    .thumb{
-        width: 35px;
-        margin-bottom: 1px;
-        float: right;
-        img{
-            width: 100%;
-        }
-    }
-
-    .thumb-count{
-        margin-right: 7px;
-        float: right;
-        padding-top: 10px;
-    }
-}
-
-.problem-tiles{
-    padding-left: 5px;
-    padding-right: 5px;
 }
 
 /* Responsive: Portrait tablets and up */
