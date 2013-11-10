@@ -13,6 +13,20 @@ module.exports = function (grunt) {
   // load all grunt tasks
   require('load-grunt-tasks')(grunt);
 
+
+  grunt.file.read(".env").split("\n").forEach(function (line){
+
+    var matches;
+    if (matches = line.match(/^(.+)=\"?([^\"]+)\"?$/m)) {
+
+      var key = matches[1], value = matches[2];
+
+      if (process.env[key] == null)
+        process.env[key] = value;
+
+    }
+  });
+
   grunt.initConfig({
     // configurable paths
     yeoman: {
@@ -386,8 +400,27 @@ module.exports = function (grunt) {
           cwd: '.tmp/scripts'
         }]
       }
+    },
+    's3-sync': {
+      options: {
+        key: process.env.AWS_ACCESS_KEY_ID,
+        secret: process.env.AWS_SECRET_ACCESS_KEY,
+        bucket: "problemkind.io",
+        region: "us-west-2",
+        access: "public-read",
+        concurrency: 5
+      }, 
+      deploy: {
+        files: [{
+          root: "dist",
+          src: "dist/**/*.*",
+          nocase: true,
+          dest: "/"
+        }]
+      }
     }
   });
+
 
   grunt.registerMultiTask('aggregate_scripts', function () {
 
@@ -462,5 +495,10 @@ module.exports = function (grunt) {
     'jshint',
     'test',
     'build'
+  ]);
+
+  grunt.registerTask('deploy', [
+    'build',
+    's3-sync:deploy'
   ]);
 };

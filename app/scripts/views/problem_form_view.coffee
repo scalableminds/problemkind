@@ -16,11 +16,12 @@ class ProblemFormView extends HumanView
     "submit form" : "handleNextButton"
     "input .problem-statement-input" : "handleInput"
 
-  textSnippets:
-    "initial": ["Tell me, what annoys you?"]
-    "why" : ["Why?"]
-    "thinking" : ["Mhm, interesting.", "Aha..."]
-
+  thinkingPhrases : [
+    "Mmmm."
+    "Interesting."
+    "Aha."
+    "Ohh."
+  ]
 
   render : ->
 
@@ -29,6 +30,9 @@ class ProblemFormView extends HumanView
     @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
     @renderSubview(@activeAnswerInput, ".answers-input")
     @handleInput()
+
+    @$(".big-question").addClass("fade")
+    _.defer => @$(".big-question").addClass("in")
 
 
   handleNextButton : ->
@@ -40,7 +44,7 @@ class ProblemFormView extends HumanView
       @renderSubview(
         new ProblemFormView.DisplayView(
           model : new Backbone.Model(
-            question : 'Why?'
+            question : @$(".big-question").text()
             answer : @activeAnswerInput.model.get("content")
           )
         )
@@ -51,7 +55,22 @@ class ProblemFormView extends HumanView
       @renderSubview(@activeAnswerInput, ".answers-input")
 
       @$el.removeClass("before-wish")
-      @$(".big-question").text("Why?")
+
+      @setQuestion(@thinkingPhrases[_.random(0, @thinkingPhrases.length - 1)])
+      
+
+      window.setTimeout(
+        =>
+          @setQuestion("Why?")
+        2000
+      )
+      
+
+  setQuestion : (question) ->
+
+    newQuestion = $("<h2>", class : "big-question fade").text(question)
+    @$(".big-question").replaceWith(newQuestion)
+    _.defer => newQuestion.addClass("in")
 
 
   handleLollipopButton : ->
