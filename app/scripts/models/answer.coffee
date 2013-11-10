@@ -1,6 +1,7 @@
 ### define
 parse: Parse
 ./question: Question
+./user: User
 ###
 
 class Answer extends Parse.Object
@@ -10,12 +11,16 @@ class Answer extends Parse.Object
   defaults : 
     content: "" 
     questions: []
-    answerTo: {}
-    user : {}
 
-  initialize : ->
-    @save()
-    # @set("questions", new (Question.Collection)())
+  @create : (content) ->
+    User.withUser( (user) ->
+      c = new Answer(
+        user: user
+        content: content
+      )
+      c.save()
+      c
+    )
 
   addQuestion: (content) ->
     q = new Question(

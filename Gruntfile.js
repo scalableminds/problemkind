@@ -52,6 +52,13 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/scripts/templates/*.ejs'
         ],
         tasks: ['jst']
+      },
+      aggregate_scripts: {
+        files: [
+          '.tmp/scripts/models/**/*',
+          '.tmp/scripts/views/**/*'
+        ],
+        tasks: ['aggregate_scripts']
       }
     },
     connect: {
@@ -194,7 +201,7 @@ module.exports = function (grunt) {
           baseUrl: '<%= yeoman.app %>/../.tmp/scripts',
           optimize: 'none',
           paths: {
-            '../bower_components' : '../<%= yeoman.app %>/bower_components'
+            'bower' : 'test'
             //'templates': '../../.tmp/scripts/templates'
           },
           // TODO: Figure out how to make sourcemaps work with grunt-usemin
@@ -363,7 +370,53 @@ module.exports = function (grunt) {
         'svgmin',
         'htmlmin'
       ]
+    }, 
+    aggregate_scripts: {
+      views: {
+        files : [{
+          dest: '.tmp/scripts/views.js',
+          src: 'views/**/*.js',
+          cwd: '.tmp/scripts'
+        }]
+      },
+      models: {
+        files : [{
+          dest: '.tmp/scripts/models.js',
+          src: 'models/**/*.js',
+          cwd: '.tmp/scripts'
+        }]
+      }
     }
+  });
+
+  grunt.registerMultiTask('aggregate_scripts', function () {
+
+    var relativeFilename = function (file, fileSrc) {
+      return fileSrc
+        .replace(file.cwd, '')
+        .replace(/\.js$/, '');
+    }
+    var className = function (file, fileSrc) {
+      return relativeFilename(file, fileSrc)
+        .replace(/^.*\//, '')
+        .replace(/^[a-z]/g, function (a) { return a.toUpperCase(); })
+        .replace(/_[a-z]/g, function (a) { return a[1].toUpperCase(); });
+    }
+  
+    this.files.forEach(function (file) {
+
+      var output = 
+        'define([' + 
+        file.src.map(function (fileSrc) { return '"./' + relativeFilename(file, fileSrc) + '"'; }).join(', ') + 
+        '], function (' + 
+        file.src.map(function (fileSrc) { return className(file, fileSrc); }).join(',') + 
+        ') { return {' + 
+        file.src.map(function (fileSrc) { return className(file, fileSrc) + ':' + className(file, fileSrc); }).join(', ') + 
+        '}; })';
+
+      grunt.file.write(file.dest, output);
+
+    });
   });
 
   grunt.registerTask('server', function (target) {
@@ -374,6 +427,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'concurrent:server',
+      'aggregate_scripts',
       'autoprefixer',
       'connect:livereload',
       'watch'
@@ -383,6 +437,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test', [
     'clean:server',
     'concurrent:test',
+    'aggregate_scripts',
     'autoprefixer',
     'connect:test',
     'mocha'
@@ -392,6 +447,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'useminPrepare',
     'concurrent:dist',
+    'aggregate_scripts',
     'requirejs',
     'autoprefixer',
     'concat',

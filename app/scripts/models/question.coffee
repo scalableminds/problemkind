@@ -12,7 +12,9 @@ class Question extends Parse.Object
     answer : {}
     user : {}
 
-  setAnswer: (user, content) ->
+  
+
+  setAnswer: (content) ->
 
   class @Collection extends Parse.Collection
 

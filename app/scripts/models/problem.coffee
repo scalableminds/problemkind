@@ -1,4 +1,5 @@
 ### define
+underscore : _
 parse: Parse
 ./answer: Answer
 ./solution: Solution
@@ -10,30 +11,72 @@ class Problem extends Parse.Object
   className : "Problem"
 
   defaults : 
+    text : "Hallo Welt"
     answers: []
-    thumbs : 0
+    thumbs : []
+    isCompleted: false
 
-  initialize : ->
+  @create: ->
     User.withUser( (user) =>
-      @set("user", user)
       acl = new Parse.ACL(user)
       acl.setPublicReadAccess(true)
-      @setACL(acl)
-      @save()
+      p = new Problem(
+        user: user
+      )
+      p.setACL(acl).save()
+      p
     )
 
-  @trending : ->
+
+  @trending: (limit = 100) ->
     query = new Parse.Query(Problem)
-    c = query.collection()
+    c = query
+      .equalTo("isCompleted", true)
+      .limit(limit)
+      .collection()
     c.fetch()
     c
 
-  firstAnswer : ->
+  @keywordsIn: (str) ->
+    str.replace(/[^A-Za-z\s]/g, "").split(" ")  
+
+  @similar : (to, limit = 100) ->
+    keywords = Problem.keywordsIn(to)
+    query = new Parse.Query(Problem)
+    answers = Parse.Query.or.apply(
+      $, 
+      keywords.map( (x) -> new Parse.Query(Answer).contains("content", x)))
+    query.matchesQuery("answers", answers);
+    c = query
+      .limit(limit)
+      .equalTo("isCompleted", true)
+      .collection()
+    c.fetch()
+    c
+
+  fetchAnswers : ->
+    answers = _(@get("answers")).first(3).each( (answer, i) =>
+      answer.fetch(
+        success : =>
+          @set("_answer#{i}", answer.get("content"))
+      )
+    )
+    answers
+
+  fetchAnswer : ->
+    answers = @get("answers")
+    if answers.length > 0
+      a = answers[0]
+      a.fetch(
+        error: (answer, error) ->
+          console.error("Couldn't fetch first answer: #{error}")
+      )
+      a
 
 
   # withAnswers: (f) ->
   #   query = new Parse.Query(Answer)
-  #   query.equalTo("answerTo", this);
+  #   query.equalTo("answerTo", this); 
   #   query.find(
   #     success: (answers) ->
   #       console.log("Successfully retrieved " + answers.length + " answers.")
@@ -54,21 +97,42 @@ class Problem extends Parse.Object
           console.error("Couldn't fetch answers!")
       )
 
-  addAnswer: (content) ->
-    a = new Answer(
-      content: content
-      answerTo: this
-    )
-    a.save()
-    @get("answers").push(a)
+  addAnswer: (answer) ->
+    @save()
+    answer.set("answerTo", this)
+    answer.save()
+    @get("answers").push(answer)
+    @save()
+
+  complete: ->
+    @set("isCompleted", true)
     @save()
 
   addSolution : (content) ->
-    new Solution(
-      content: content
-      solutionTo: this
-    ).save()
+    User.withUser( (user) =>
+      new Solution(
+        content: content
+        solutionTo: this
+        user: user
+      ).save()
+    )
+
+  save : (args...) ->
+    _(@attributes).forOwn( (value, key) =>
+      @unset(key) if key[0] == "_"
+    )
+    super(args...)
+
+  canGiveThumbs : ->
+    User.withUser( (user) => 
+      not @get("thumbs").contains(user)
+    )
+
+  countThumbs : ->
+    @get("thumbs").length
 
   thumbsUp : ->
-    @set("thumbs", @get("thumbs") + 1)
-    @save()
+    User.withUser( (user) => 
+      @set("thumbs", @get("thumbs").push(user))
+      @save()
+    )
