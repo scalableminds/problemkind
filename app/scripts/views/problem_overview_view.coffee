@@ -39,4 +39,5 @@ class ProblemOverviewView extends HumanView
       @renderAndBind()
 
       @$("a").attr("href", "#problem/#{@model.id}")
+      @$(".thumb-count").text(@model.countThumbs())
       @model.fetchAnswers()
