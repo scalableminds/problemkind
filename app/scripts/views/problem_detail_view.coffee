@@ -47,7 +47,9 @@ class ProblemDetailView extends HumanView
     )
 
     @renderSubview(new ProblemDetailView.AnswerListView(collection : answerCollection), @$(".questions"))
-    @renderSubview(new ProblemDetailView.SolutionView(model : @model), @$(".solutions"))
+
+    if @model.id == "AeT2daeHMZ"
+      @renderSubview(new ProblemDetailView.SolutionView(model : @model), @$(".solutions"))
 
 
   class @SolutionView extends HumanView
