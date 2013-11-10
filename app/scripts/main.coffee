@@ -50,7 +50,8 @@ define([
     'routers/router'
     'models'
     'views'
-  ], (Backbone, $, app, Parse, Router, Models, Views) ->
+    'bootstrap'
+  ], (Backbone, $, app, Parse, Router, Models, Views, Bootstrap) ->
 
     window.app = app
 
