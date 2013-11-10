@@ -1,5 +1,6 @@
 ### define
 app : app
+backbone : Backbone
 human_view : HumanView
 underscore : _
 templates : templates
@@ -12,26 +13,37 @@ class ProblemFormView extends HumanView
   events : 
     "click .lollipop-button" : "handleLollipopButton"
     "click .next-button" : "handleNextButton"
+    "submit form" : "handleNextButton"
 
   render : ->
 
     @renderAndBind()
 
     @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
-    @renderSubview(@activeAnswerInput, ".answers")
-
-    @activeAnswerInput.setAutofocus()
+    @renderSubview(@activeAnswerInput, ".answers-input")
 
 
   handleNextButton : ->
 
     if @activeAnswerInput.model.get("content")
       @model.addAnswer(@activeAnswerInput.model)
+      @activeAnswerInput.remove()
+
+      @renderSubview(
+        new ProblemFormView.DisplayView(
+          model : new Backbone.Model(
+            question : 'Why?'
+            answer : @activeAnswerInput.model.get("content")
+          )
+        )
+        ".answers-complete"
+      )
 
       @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
-      @renderSubview(@activeAnswerInput, ".answers")
+      @renderSubview(@activeAnswerInput, ".answers-input")
 
       @$el.removeClass("before-wish")
+      @$(".big-question").text("Why?")
 
 
   handleLollipopButton : ->
@@ -52,6 +64,20 @@ class ProblemFormView extends HumanView
     @$el.one("transitionend", => @remove())
 
 
+
+  class @DisplayView extends HumanView
+
+    textBindings :
+      'question' : '.question'
+      'answer' : '.answer'
+
+    template : templates.problem_form_display
+
+    render : ->
+
+      @renderAndBind()
+      @$el.addClass("fade")
+      _.defer => @$el.addClass("in")
 
 
   class @InputView extends HumanView
@@ -78,14 +104,12 @@ class ProblemFormView extends HumanView
         @$(".char-counter").removeClass("warning")
 
 
-    setAutofocus : ->
+    setFocus : ->
 
-      @$(".problem-statement-input").attr("autofocus", "")
+      @$(".problem-statement-input")[0].focus()
 
-
-    makeReadonly : ->
-
-      
 
     render : -> 
+
       @renderAndBind()
+      _.defer => @setFocus()
