@@ -45,6 +45,7 @@ class ProblemOverviewView extends HumanView
       
       @listenToAndRun(@model, "change:thumbs", ->
         @$(".thumb-count").text(@model.countThumbs())
+        @$(".thumb-info").toggleClass("thumbed", not @model.canGiveThumbs())
       )
       @model.fetchAnswers()
 
@@ -54,4 +55,11 @@ class ProblemOverviewView extends HumanView
 
       event.preventDefault()
       event.stopPropagation()
-      @model.thumbsUp()
+
+      if @model.canGiveThumbs()
+        @model.thumbsUp()
+      else
+        @model.thumbsDown()
+
+
+        

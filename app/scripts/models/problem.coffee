@@ -137,3 +137,10 @@ class Problem extends Parse.Object
         @set("thumbs", newThumbs)
         @save()
     )
+
+  thumbsDown : ->
+    User.withUser( (user) => 
+      newThumbs = _.without(@get("thumbs"), user)
+      @set("thumbs", newThumbs)
+      @save()
+    )

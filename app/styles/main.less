@@ -279,19 +279,34 @@ footer {
             bottom: 17px;
             right: 14px;
 
-            .thumb{
+            .thumb {
+                background-image: url(/images/thumb.svg);
+                background-size: cover;
                 width: 35px;
+                height: 35px;
                 margin-bottom: 1px;
                 float: right;
                 img{
                     width: 100%;
                 }
+                opacity: .4;
             }
 
             .thumb-count{
                 margin-right: 7px;
                 float: right;
                 padding-top: 10px;
+            }
+
+            &.thumbed {
+                .thumb {
+                    background-image: url(/images/thumb_full.svg);
+                }
+            }
+            &:hover {
+                .thumb {
+                    opacity: 1;
+                }
             }
         }
 
