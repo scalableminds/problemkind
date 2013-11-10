@@ -55,14 +55,18 @@ class ProblemFormView extends HumanView
 
     @model.complete()
 
-    @animateRemove()
+    window.location.href = "#submitted"
 
 
-  animateRemove : ->
 
-    @$el.addClass("fade")
-    @$el.one("transitionend", => @remove())
+  class @ResultView extends HumanView
 
+    template : templates.problem_form_result
+
+    render : ->
+      @renderAndBind()
+      @$el.addClass("fade")
+      _.defer => @$el.addClass("in")
 
 
   class @DisplayView extends HumanView
