@@ -1,6 +1,7 @@
 ### define
 underscore : _
 parse: Parse
+backbone: Backbone
 ./answer: Answer
 ./solution: Solution
 ./user: User
@@ -11,7 +12,6 @@ class Problem extends Parse.Object
   className : "Problem"
 
   defaults : 
-    text : "Hallo Welt"
     answers: []
     thumbs : []
     numberOfThumbs: 0
@@ -61,7 +61,7 @@ class Problem extends Parse.Object
     query = new Parse.Query(Problem)
     answers = Parse.Query.or.apply(
       $, 
-      keywords.map( (x) -> new Parse.Query(Answer).contains("content", x)))
+      keywords.map( (x) -> new Parse.Query(Answer).contains("answer", x)))
     query.matchesQuery("answers", answers);
     c = query
       .limit(limit)
@@ -74,50 +74,17 @@ class Problem extends Parse.Object
     answers = _(@get("answers")).each( (answer, i) =>
       answer.fetch(
         success : =>
-          @attributes["_answer#{i}"] = answer.get("content")
-          @trigger("change:_answer#{i}", answer.get("content"))
+          @attributes["_answer#{i}"] = answer.get("answer")
+          @trigger("change:_answer#{i}", answer.get("answer"))
       )
     )
     answers
 
-  fetchAnswer : ->
-    answers = @get("answers")
-    if answers.length > 0
-      a = answers[0]
-      a.fetch(
-        error: (answer, error) ->
-          console.error("Couldn't fetch first answer: #{error}")
-      )
-      a
-
-
-  # withAnswers: (f) ->
-  #   query = new Parse.Query(Answer)
-  #   query.equalTo("answerTo", this); 
-  #   query.find(
-  #     success: (answers) ->
-  #       console.log("Successfully retrieved " + answers.length + " answers.")
-  #       f(answers)
-
-  #     error: (error) ->
-  #       console.warn("Error: " + error.code + " " + error.message)
-  #   )
-
-  addQuestion : (answerIdx, content) ->
-    # TODO: implement
-    answers = @get("answers")
-    if answerIdx < answers.length
-      answers[answerIdx].fetch(
-        success: (answer) ->
-          answer.addQuestion(content)
-        error: (answer, error) ->
-          console.error("Couldn't fetch answers!")
-      )
 
   addAnswer: (answer) ->
-    answer.set("answerTo", this)
     answer.save()
-    @get("answers").push(answer)
+    newAnswers = @get("answers").concat([answer])
+    @set("answers", newAnswers)
     @save()
 
   complete: ->
@@ -164,3 +131,4 @@ class Problem extends Parse.Object
   class @Collection extends Backbone.Collection
 
     model : Problem
+

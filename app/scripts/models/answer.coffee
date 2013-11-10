@@ -9,27 +9,23 @@ class Answer extends Parse.Object
   className : "Answer"
 
   defaults : 
-    content: "" 
-    questions: []
+    question : ""
+    answer: "" 
+    answers: []
 
-  @create : (content) ->
+  @create : (attr = {}) ->
     User.withUser( (user) ->
-      c = new Answer(
-        user: user
-        content: content
-      )
+      c = new Answer(_.extend(attr, { user }))
       c.save()
       c
     )
 
-  addQuestion: (content) ->
-    q = new Question(
-      content: content
-      questionTo: this
-    )
-    q.save()
-    @get("questions").push(q)
+
+  addAnswer: (answer) ->
+    answer.save()
+    @get("answers").push(answer)
     @save()
+
 
   class @Collection extends Parse.Collection
 

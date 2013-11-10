@@ -16,52 +16,50 @@ class ProblemFormView extends HumanView
     "submit form" : "handleNextButton"
     "input .problem-statement-input" : "handleInput"
 
-  thinkingPhrases : [
-    "Mmmm."
-    "Interesting."
-    "Aha."
-    "Ohh."
-  ]
+  phrases : 
+    thinking : [
+      "Mmmm."
+      "Interesting."
+      "Aha."
+      "Ohh."
+    ]
+    initial : "Tell me, what annoys you?"
+    then : "Why?"
 
   render : ->
 
     @renderAndBind()
 
-    @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
+    @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create( question : @phrases.initial ))
     @renderSubview(@activeAnswerInput, ".answers-input")
     @handleInput()
 
-    @$(".big-question").addClass("fade")
+    @$(".big-question").text(@phrases.initial).addClass("fade")
     _.defer => @$(".big-question").addClass("in")
 
 
   handleNextButton : ->
 
-    if @activeAnswerInput.model.get("content")
+    if @activeAnswerInput.model.get("answer")
       @model.addAnswer(@activeAnswerInput.model)
       @activeAnswerInput.remove()
 
       @renderSubview(
-        new ProblemFormView.DisplayView(
-          model : new Backbone.Model(
-            question : @$(".big-question").text()
-            answer : @activeAnswerInput.model.get("content")
-          )
-        )
+        new ProblemFormView.DisplayView(model : @activeAnswerInput.model)
         ".answers-complete"
       )
 
-      @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create())
+      @activeAnswerInput = new ProblemFormView.InputView(model : app.models.Answer.create( question : @phrases.then ))
       @renderSubview(@activeAnswerInput, ".answers-input")
 
       @$el.removeClass("before-wish")
 
-      @setQuestion(@thinkingPhrases[_.random(0, @thinkingPhrases.length - 1)])
+      @setQuestion(@phrases.thinking[_.random(0, @phrases.thinking.length - 1)])
       
 
       window.setTimeout(
         =>
-          @setQuestion("Why?")
+          @setQuestion(@phrases.then)
         2000
       )
       
@@ -75,7 +73,7 @@ class ProblemFormView extends HumanView
 
   handleLollipopButton : ->
 
-    if @activeAnswerInput.model.get("content") != ""
+    if @activeAnswerInput.model.get("answer") != ""
       @model.addAnswer(@activeAnswerInput.model)
     else
       @activeAnswerInput.model.destroy()
@@ -129,7 +127,7 @@ class ProblemFormView extends HumanView
 
 
     handleInputChange : ->
-      @model.set("content", @$(".problem-statement-input").val())
+      @model.set("answer", @$(".problem-statement-input").val())
       return
 
 
