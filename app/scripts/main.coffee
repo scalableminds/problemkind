@@ -74,7 +74,8 @@ require([
 
     app.on("start", ->
 
-      app.view = new app.views.MainView().renderAndBind()
+      app.view = new app.views.MainView()
+      app.view.render()
       $("body").append(app.view.el)
 
       Backbone.history.start()
