@@ -17,7 +17,7 @@ class ProblemFormView extends HumanView
     "input .problem-statement-input" : "handleInput"
 
   thinkingPhrases : [
-    "Hmmm."
+    "Mmmm."
     "Interesting."
     "Aha."
     "Ohh."
