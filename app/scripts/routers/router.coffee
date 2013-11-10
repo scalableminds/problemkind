@@ -7,22 +7,37 @@ class RouterRouter extends Backbone.Router
   routes : 
 
     "" : "index"
+    "problem/:problem_id" : "problem_detail"
 
 
   index : ->
 
-    app.view.renderSubview(
+    @changeView(
       new app.views.ProblemFormView(
         model : app.models.Problem.create()
       )
-      ".content"
-    )
-    app.view.renderSubview(
       new app.views.ProblemOverviewView(
         model : new Backbone.Model(title : "Trending Problems")
         collection : app.models.Problem.trending()
       )
-      ".content"
     )
 
 
+
+  problem_detail : (problemId) ->
+
+    @changeView(
+      new app.views.ProblemDetailView()
+    )
+
+
+  changeView : (views...) ->
+
+    if @currentViews
+      _(@currentViews).invoke("remove")
+
+    @currentViews = views
+
+    _(@currentViews).each( (view) ->
+      app.view.renderSubview(view, ".content")
+    )
