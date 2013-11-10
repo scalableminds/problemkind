@@ -19,7 +19,7 @@ class RouterRouter extends Backbone.Router
     )
     app.view.renderSubview(
       new app.views.ProblemOverviewView(
-        model : new Backbone.Model(title : "WAT")
+        model : new Backbone.Model(title : "Trending Problems")
         collection : app.models.Problem.trending()
       )
       ".content"
