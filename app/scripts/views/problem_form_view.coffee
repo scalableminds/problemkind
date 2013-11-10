@@ -83,7 +83,7 @@ class ProblemFormView extends HumanView
 
     @model.complete()
 
-    window.location.href = "#submitted"
+    window.location.href = "#submitted/#{@model.id}"
 
 
   handleInput : ->
@@ -103,6 +103,9 @@ class ProblemFormView extends HumanView
       @renderAndBind()
       @$el.addClass("fade")
       _.defer => @$el.addClass("in")
+      @$("a")
+        .text("http://problemkind.io/#problem/#{@model.id}")
+        .attr("href", "http://problemkind.io/#problem/#{@model.id}")
 
 
   class @DisplayView extends HumanView

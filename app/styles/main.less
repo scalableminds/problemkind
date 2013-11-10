@@ -53,22 +53,49 @@ header.navbar {
     background-color: @primary-1;
     position: static;
     margin: 0;
-    
-    a {
-        font-size: 24px;
-    }
 
     .navbar-brand {
+        font-size: 24px;
         color: #fff;
     }
 
-    .user-menu{
-        a{
-            color: #fff;
+    .user-menu {
+
+        .dropdown-hover-coloring {
+            color: @primary-1;
+            background-color: #fff;
+            .caret {
+                border-top-color: @primary-1;
+                border-bottom-color: @primary-1;
+            }   
         }
-        .nav .caret{
-            border-top-color: #fff;
-            border-bottom-color: #fff;
+
+        .open > a {
+            .dropdown-hover-coloring;
+        }
+
+        .dropdown-toggle {
+            color: #fff;
+            .caret {
+                border-top-color: #fff;
+                border-bottom-color: #fff;
+            }
+            &:hover,
+            &:focus,
+            &:active {
+                .dropdown-hover-coloring;
+            }
+        }
+        .dropdown-menu {
+            border-color: lighten(@primary-1, 20%);
+
+            li a {
+                color: #000;
+                &:hover,
+                &:focus {
+                    background: darken(@background, 10%);
+                }
+            }
         }
     }
 }
@@ -164,6 +191,10 @@ footer {
     padding: 50px 0;
     background-color: @primary-1;
     color: white;
+
+    a {
+        color: #eee;
+    }
     
 }
 
