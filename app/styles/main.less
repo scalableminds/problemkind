@@ -350,7 +350,42 @@ footer {
 
         }
     }
-    .question-box{
+
+    .sub-questions {
+        
+        & > div {
+            padding: 20px 30px;
+        }
+
+        .question-input {
+            resize: none;
+            font-size: 28px;
+            border-color: lighten(@primary-1, 30%);
+
+            &:focus {
+                box-shadow: 0 0 13px rgba(255,255,255,.3);
+                border-color: lighten(@primary-1, 10%);
+            }
+        }
+
+        .char-counter {
+            margin: 10px;
+            float: left;
+            
+            .warning {
+                color: red;
+            }
+        }
+        .next-button {
+            margin-top: 10px; 
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+        .ask-button {
+            display: none;
+        }
+    }
+    .question-box {
         .question-counter {
             text-align: center
         }

@@ -27,6 +27,17 @@ class Answer extends Parse.Object
     @save()
 
 
+  fetchAnswers : ->
+    answers = _(@get("answers")).each( (answer, i) =>
+      answer.fetch(
+        success : =>
+          @attributes["_answer#{i}"] = answer.get("answer")
+          @trigger("change:_answer#{i}", answer.get("answer"))
+      )
+    )
+    answers
+
+
   class @Collection extends Parse.Collection
 
     model: Answer

@@ -8,10 +8,22 @@
         <div class="counter-title"></div>
       </div>
     </div>
-    <div class="question-list"></div>
-    <div class="question-input"></div>
-    <div class="pull-right">
-      <button type="button" class="btn btn-lg btn-outline-inverse next-button">Ask Question</button>
+    <div class="clearfix">
+      <div class="pull-right">
+        <a type="button" class="btn btn-outline-inverse ask-button" data-toggle="collapse" href="">Ask question <span class="question-count"></span></a>
+      </div>
+    </div>
+    <div class="collapse sub-questions clearfix" id="">
+      <div>
+        <div class="questions-list"></div>
+        <form>
+          <textarea class="form-control question-input" rows="3"></textarea>
+          <p class="char-counter">0/140</p>
+          <div class="pull-right">
+            <button type="button" class="btn btn-lg btn-outline-inverse next-button">Ok</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
