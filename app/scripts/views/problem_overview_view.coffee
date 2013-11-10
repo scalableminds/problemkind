@@ -14,7 +14,7 @@ class ProblemOverviewView extends HumanView
   render : ->
 
     @renderAndBind()
-    @$container = @$(".row")
+    @$container = @$(".row.problem-tiles")
     @renderCollection(@collection, ProblemOverviewView.ItemView, @$container[0])
     @listenTo(@collection, "sync", @handleCollectionSync)
 
