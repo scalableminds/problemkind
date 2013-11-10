@@ -35,11 +35,14 @@ class RouterRouter extends Backbone.Router
     )
 
 
-
   problem_detail : (problemId) ->
 
+    problem = new app.models.Problem(id : problemId)
+    problem.fetch()
     @changeView(
-      new app.views.ProblemDetailView()
+      new app.views.ProblemDetailView(
+        model : problem
+      )
     )
 
 

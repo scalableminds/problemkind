@@ -252,13 +252,6 @@ footer {
         }
     }
 
-    .problem-tile {
-        padding: 10px;
-        position: relative;
-        :hover{
-           background-color:#BE99D6;
-        }
-    }
 
     .problem-preview {
         padding: 20px;
@@ -268,14 +261,17 @@ footer {
     }
 
     .problem-tile{
-        p{
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
         padding: 10px;
         position: relative;
-        :hover{
+        
+
+        article:hover {
            background-color: darken(@background, 10%);
+        }
+        
+        p {
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .thumb-info{
