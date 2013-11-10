@@ -7,7 +7,7 @@ class RouterRouter extends Backbone.Router
   routes : 
 
     "" : "index"
-    "submitted" : "submitted"
+    "submitted/:problem_id" : "submitted"
     "problem/:problem_id" : "problem_detail"
 
 
@@ -24,10 +24,10 @@ class RouterRouter extends Backbone.Router
     )
 
 
-  submitted : ->
+  submitted : (problemId) ->
 
     @changeView(
-      new app.views.ProblemFormView.ResultView()
+      new app.views.ProblemFormView.ResultView(model : { id : problemId })
       new app.views.ProblemOverviewView(
         model : new Backbone.Model(title : "Trending Problems")
         collection : app.models.Problem.trending()
