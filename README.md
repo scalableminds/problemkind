@@ -11,7 +11,7 @@ What's your most annoying problem? We help you to find the root cause of the pro
 
 ## Installation
 
-# Generator changes
+### Generator changes
 
 * underscore -> lodash
 * add async
@@ -27,7 +27,7 @@ What's your most annoying problem? We help you to find the root cause of the pro
 * watch:less needs <%= yeoman.app %>
 * aggregate scripts
 
-# Generator Todo
+### Generator Todo
 
 * view scaffold
 * model scaffold (backbone, parse)
