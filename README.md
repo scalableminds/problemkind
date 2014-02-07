@@ -9,6 +9,14 @@ What's your most annoying problem? We help you to find the root cause of the pro
 
 3. Your problem got successfully solved by others :)
 
+Proudly build by scalable minds on the launch hackathon:
+
+http://hackathon.launch.co/project/launch-hackathon-2013-scalable-mindss-project.
+
+A proof of concept can be found under: 
+
+http://problemkind.io
+
 ## Installation
 
 ### Generator changes
